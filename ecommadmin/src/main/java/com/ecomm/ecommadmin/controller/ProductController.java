@@ -20,25 +20,22 @@ public class ProductController {
     @PostMapping("/products")
     public ResponseEntity<?> addProduct(
             @RequestBody Product product,
-            @RequestHeader("username") String username
-    )
-    {
+            @RequestHeader("Authorization") String authHeader) {
         try {
-            Product created = productService.addProduct(product, username);
+            Product created = productService.addProduct(product, authHeader);
             return ResponseEntity.status(HttpStatus.CREATED).body(created);
         } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e.getMessage());
         }
     }
 
-
     @PutMapping("/products/{id}")
     public ResponseEntity<?> updateProduct(
             @PathVariable Long id,
             @RequestBody Product product,
-            @RequestHeader("username") String username) {
+            @RequestHeader("Authorization") String authHeader) {
         try {
-            Product updated = productService.updateProduct(id, product, username);
+            Product updated = productService.updateProduct(id, product, authHeader);
             return ResponseEntity.ok(updated);
         } catch (RuntimeException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
@@ -46,9 +43,9 @@ public class ProductController {
     }
 
     @GetMapping("/products")
-    public ResponseEntity<?> getSellerProducts(@RequestHeader("username") String username) {
+    public ResponseEntity<?> getSellerProducts(@RequestHeader("Authorization") String authHeader) {
         try {
-            List<Product> products = productService.getSellerProducts(username);
+            List<Product> products = productService.getSellerProducts(authHeader);
             return ResponseEntity.ok(products);
         } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e.getMessage());
@@ -59,9 +56,9 @@ public class ProductController {
     public ResponseEntity<?> updateQuantity(
             @PathVariable Long id,
             @RequestParam Integer quantity,
-            @RequestHeader("username") String username) {
+            @RequestHeader("Authorization") String authHeader) {
         try {
-            Product updated = productService.updateQuantity(id, quantity, username);
+            Product updated = productService.updateQuantity(id, quantity, authHeader);
             return ResponseEntity.ok(updated);
         } catch (RuntimeException e) {
             return ResponseEntity.badRequest().body(e.getMessage());

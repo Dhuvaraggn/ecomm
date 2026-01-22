@@ -1,6 +1,6 @@
 package com.ecomm.ecommbuyer.service;
 
-import com.ecomm.ecommauth.dto.AuthResponse;
+import com.ecomm.ecommbuyer.dto.AuthResponse;
 import com.ecomm.ecommbuyer.client.AdminClient;
 import com.ecomm.ecommbuyer.client.AuthClient;
 import com.ecomm.ecommbuyer.dto.ProductResponse;
@@ -24,14 +24,19 @@ public class BuyerService {
     private final AuthClient authClient;
     private final AdminClient adminClient;
 
-    public Cart addToCart(Long productId, Integer quantity, String username) {
-        // Validate buyer user
-        AuthResponse authResponse = authClient.validateUser(username);
+    public Cart addToCart(Long productId, Integer quantity, String authHeader) {
+        // Validate JWT token
+        AuthResponse authResponse = authClient.validateToken(authHeader);
+
+        if (!"Token is valid".equals(authResponse.getMessage())) {
+            throw new RuntimeException("Invalid or expired token");
+        }
+
         if (!"BUYER".equals(authResponse.getRole())) {
             throw new RuntimeException("Access denied. Buyer role required.");
         }
 
-        //Verify product exists and has sufficient quantity
+        // Verify product exists and has sufficient quantity
         ProductResponse product = adminClient.getProductById(productId);
         if (product.getQuantity() < quantity) {
             throw new RuntimeException("Insufficient product quantity available");
@@ -53,9 +58,14 @@ public class BuyerService {
         }
     }
 
-    public List<Cart> getCart(String username) {
-        // Validate buyer user
-        AuthResponse authResponse = authClient.validateUser(username);
+    public List<Cart> getCart(String authHeader) {
+        // Validate JWT token
+        AuthResponse authResponse = authClient.validateToken(authHeader);
+
+        if (!"Token is valid".equals(authResponse.getMessage())) {
+            throw new RuntimeException("Invalid or expired token");
+        }
+
         if (!"BUYER".equals(authResponse.getRole())) {
             throw new RuntimeException("Access denied. Buyer role required.");
         }
@@ -63,9 +73,14 @@ public class BuyerService {
         return cartRepository.findByBuyerId(authResponse.getUserId());
     }
 
-    public void removeFromCart(Long cartId, String username) {
-        // Validate buyer user
-        AuthResponse authResponse = authClient.validateUser(username);
+    public void removeFromCart(Long cartId, String authHeader) {
+        // Validate JWT token
+        AuthResponse authResponse = authClient.validateToken(authHeader);
+
+        if (!"Token is valid".equals(authResponse.getMessage())) {
+            throw new RuntimeException("Invalid or expired token");
+        }
+
         if (!"BUYER".equals(authResponse.getRole())) {
             throw new RuntimeException("Access denied. Buyer role required.");
         }
@@ -82,9 +97,14 @@ public class BuyerService {
     }
 
     @Transactional
-    public List<Order> placeOrder(String username) {
-        // Validate buyer user
-        AuthResponse authResponse = authClient.validateUser(username);
+    public List<Order> placeOrder(String authHeader) {
+        // Validate JWT token
+        AuthResponse authResponse = authClient.validateToken(authHeader);
+
+        if (!"Token is valid".equals(authResponse.getMessage())) {
+            throw new RuntimeException("Invalid or expired token");
+        }
+
         if (!"BUYER".equals(authResponse.getRole())) {
             throw new RuntimeException("Access denied. Buyer role required.");
         }
@@ -118,9 +138,14 @@ public class BuyerService {
         return orders;
     }
 
-    public List<Order> getOrderHistory(String username) {
-        // Validate buyer user
-        AuthResponse authResponse = authClient.validateUser(username);
+    public List<Order> getOrderHistory(String authHeader) {
+        // Validate JWT token
+        AuthResponse authResponse = authClient.validateToken(authHeader);
+
+        if (!"Token is valid".equals(authResponse.getMessage())) {
+            throw new RuntimeException("Invalid or expired token");
+        }
+
         if (!"BUYER".equals(authResponse.getRole())) {
             throw new RuntimeException("Access denied. Buyer role required.");
         }

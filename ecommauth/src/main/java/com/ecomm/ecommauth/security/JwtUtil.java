@@ -19,7 +19,7 @@ import java.util.function.Function;
 @Component
 public class JwtUtil {
 
-    private String secret = "secret";
+    private String secret = "secretforjwttokentoauthenticateecommapplication";
 
     private Long expiration = (long) 1000 * 60 * 60 * 10;
 

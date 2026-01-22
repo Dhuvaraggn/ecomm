@@ -16,8 +16,14 @@ public class ProductService {
     private final ProductRepository productRepository;
     private final AuthClient authClient;
 
-    public Product addProduct(Product product, String username) {
-        AuthResponse authResponse = authClient.validateUser(username);
+    public Product addProduct(Product product, String authHeader) {
+        // Validate JWT token
+        AuthResponse authResponse = authClient.validateToken(authHeader);
+
+        if (!"Token is valid".equals(authResponse.getMessage())) {
+            throw new RuntimeException("Invalid or expired token");
+        }
+
         if (!"ADMIN".equals(authResponse.getRole())) {
             throw new RuntimeException("Access denied. Admin role required.");
         }
@@ -26,9 +32,14 @@ public class ProductService {
         return productRepository.save(product);
     }
 
+    public Product updateProduct(Long id, Product productDetails, String authHeader) {
+        // Validate JWT token
+        AuthResponse authResponse = authClient.validateToken(authHeader);
 
-    public Product updateProduct(Long id, Product productDetails, String username) {
-        AuthResponse authResponse = authClient.validateUser(username);
+        if (!"Token is valid".equals(authResponse.getMessage())) {
+            throw new RuntimeException("Invalid or expired token");
+        }
+
         if (!"ADMIN".equals(authResponse.getRole())) {
             throw new RuntimeException("Access denied. Admin role required.");
         }
@@ -49,9 +60,14 @@ public class ProductService {
         return productRepository.save(product);
     }
 
-    public List<Product> getSellerProducts(String username) {
-        // Validate seller user
-        AuthResponse authResponse = authClient.validateUser(username);
+    public List<Product> getSellerProducts(String authHeader) {
+        // Validate JWT token
+        AuthResponse authResponse = authClient.validateToken(authHeader);
+
+        if (!"Token is valid".equals(authResponse.getMessage())) {
+            throw new RuntimeException("Invalid or expired token");
+        }
+
         if (!"ADMIN".equals(authResponse.getRole())) {
             throw new RuntimeException("Access denied. Seller role required.");
         }
@@ -59,9 +75,14 @@ public class ProductService {
         return productRepository.findBySellerId(authResponse.getUserId());
     }
 
-    public Product updateQuantity(Long id, Integer quantity, String username) {
-        // Validate seller user
-        AuthResponse authResponse = authClient.validateUser(username);
+    public Product updateQuantity(Long id, Integer quantity, String authHeader) {
+        // Validate JWT token
+        AuthResponse authResponse = authClient.validateToken(authHeader);
+
+        if (!"Token is valid".equals(authResponse.getMessage())) {
+            throw new RuntimeException("Invalid or expired token");
+        }
+
         if (!"ADMIN".equals(authResponse.getRole())) {
             throw new RuntimeException("Access denied. Seller role required.");
         }

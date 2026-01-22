@@ -28,9 +28,9 @@ public class BuyerController {
     public ResponseEntity<?> addToCart(
             @RequestParam Long productId,
             @RequestParam Integer quantity,
-            @RequestHeader("username") String username) {
+            @RequestHeader("Authorization") String authHeader) {
         try {
-            Cart cart = buyerService.addToCart(productId, quantity, username);
+            Cart cart = buyerService.addToCart(productId, quantity, authHeader);
             return ResponseEntity.status(HttpStatus.CREATED).body(cart);
         } catch (RuntimeException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
@@ -38,9 +38,9 @@ public class BuyerController {
     }
 
     @GetMapping("/cart")
-    public ResponseEntity<?> getCart(@RequestHeader("username") String username) {
+    public ResponseEntity<?> getCart(@RequestHeader("Authorization") String authHeader) {
         try {
-            List<Cart> cart = buyerService.getCart(username);
+            List<Cart> cart = buyerService.getCart(authHeader);
             return ResponseEntity.ok(cart);
         } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e.getMessage());
@@ -50,9 +50,9 @@ public class BuyerController {
     @DeleteMapping("/cart/{id}")
     public ResponseEntity<?> removeFromCart(
             @PathVariable Long id,
-            @RequestHeader("username") String username) {
+            @RequestHeader("Authorization") String authHeader) {
         try {
-            buyerService.removeFromCart(id, username);
+            buyerService.removeFromCart(id, authHeader);
             return ResponseEntity.ok("Item removed from cart");
         } catch (RuntimeException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
@@ -60,9 +60,9 @@ public class BuyerController {
     }
 
     @PostMapping("/orders")
-    public ResponseEntity<?> placeOrder(@RequestHeader("username") String username) {
+    public ResponseEntity<?> placeOrder(@RequestHeader("Authorization") String authHeader) {
         try {
-            List<Order> orders = buyerService.placeOrder(username);
+            List<Order> orders = buyerService.placeOrder(authHeader);
             return ResponseEntity.status(HttpStatus.CREATED).body(orders);
         } catch (RuntimeException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
@@ -70,9 +70,9 @@ public class BuyerController {
     }
 
     @GetMapping("/orders")
-    public ResponseEntity<?> getOrderHistory(@RequestHeader("username") String username) {
+    public ResponseEntity<?> getOrderHistory(@RequestHeader("Authorization") String authHeader) {
         try {
-            List<Order> orders = buyerService.getOrderHistory(username);
+            List<Order> orders = buyerService.getOrderHistory(authHeader);
             return ResponseEntity.ok(orders);
         } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e.getMessage());
