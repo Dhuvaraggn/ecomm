@@ -6,6 +6,9 @@ import com.ecomm.ecommauth.dto.RegisterRequest;
 import com.ecomm.ecommauth.entity.User;
 import com.ecomm.ecommauth.repository.UserRepository;
 import com.ecomm.ecommauth.security.JwtUtil;
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
+import io.github.resilience4j.ratelimiter.annotation.RateLimiter;
+import io.github.resilience4j.retry.annotation.Retry;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -42,7 +45,9 @@ public class UserService {
                 token,
                 "User registered successfully");
     }
-
+    @CircuitBreaker(name = "default", fallbackMethod = "fallback")
+    @RateLimiter(name = "default")
+    @Retry(name = "default")
     public AuthResponse login(LoginRequest request) {
         User user = userRepository.findByUsername(request.getUsername())
                 .orElseThrow(() -> new RuntimeException("Invalid username or password"));
@@ -73,5 +78,12 @@ public class UserService {
                 user.getRole().name(),
                 null,
                 "User validated");
+    }
+
+    public AuthResponse fallback(LoginRequest request, Throwable t) {
+        System.out.println("Actual Error" + t);
+        return new AuthResponse(
+             null, null, null, null,"Login temporarily unavailable. Please try again."
+        );
     }
 }

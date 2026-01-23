@@ -1,0 +1,22 @@
+INSERT INTO products (sellerId, name, description, price, quantity)
+VALUES
+    (1, 'table mate', 'table for normal usage', 1200.00, 10),
+    (1, 'study desk', 'wooden study table', 3500.00, 5),
+    (1, 'coffee table', 'small living room table', 2200.00, 8),
+    (1, 'office chair', 'ergonomic office chair', 4500.00, 12),
+    (1, 'dining chair', 'wooden dining chair', 1800.00, 20),
+    (1, 'bookshelf', '5-tier wooden bookshelf', 5200.00, 6),
+    (1, 'tv stand', 'tv stand with storage shelves', 6000.00, 4),
+    (1, 'bedside table', 'compact bedside table', 1500.00, 15),
+    (1, 'wardrobe', '2-door wooden wardrobe', 18500.00, 2),
+    (1, 'shoe rack', 'metal shoe rack', 2800.00, 9),
+    (1, 'computer table', 'computer table with keyboard tray', 4200.00, 7),
+    (1, 'recliner chair', 'single-seater recliner chair', 14500.00, 3),
+    (1, 'sofa set', '3-seater fabric sofa', 32000.00, 1),
+    (1, 'stool', 'round wooden stool', 900.00, 25),
+    (1, 'folding table', 'portable folding table', 2600.00, 11),
+    (1, 'bench', 'outdoor wooden bench', 7800.00, 4),
+    (1, 'drawer unit', '3-drawer storage unit', 3900.00, 8),
+    (1, 'bar stool', 'adjustable height bar stool', 4100.00, 6),
+    (1, 'console table', 'slim console table for hallway', 6700.00, 5),
+    (1, 'bean bag', 'large bean bag chair', 2900.00, 14);
