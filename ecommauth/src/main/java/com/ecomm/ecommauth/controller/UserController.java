@@ -44,17 +44,6 @@ public class UserController {
         }
     }
 
-    @GetMapping("/validate/{username}")
-    public ResponseEntity<AuthResponse> validateUser(@PathVariable String username) {
-        try {
-            AuthResponse response = userService.validateUser(username);
-            return ResponseEntity.ok(response);
-        } catch (RuntimeException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(new AuthResponse(null, null, null, null, e.getMessage()));
-        }
-    }
-
     @GetMapping("/validate-token")
     public ResponseEntity<AuthResponse> validateToken(@RequestHeader("Authorization") String authorizationHeader) {
         try {

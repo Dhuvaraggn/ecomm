@@ -9,9 +9,6 @@ import org.springframework.web.bind.annotation.RequestHeader;
 @FeignClient(name = "auth-service", url = "${auth.service.url}")
 public interface AuthClient {
 
-    @GetMapping("/api/auth/validate/{username}")
-    AuthResponse validateUser(@PathVariable String username);
-
     @GetMapping("/api/auth/validate-token")
     AuthResponse validateToken(@RequestHeader("Authorization") String authorizationHeader);
 }
