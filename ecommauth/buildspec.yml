@@ -1,0 +1,38 @@
+version: 0.2
+
+env:
+  variables:
+    SERVICE_NAME: ecommauth
+    ECR_REPO: ecommauth
+    CONTAINER_NAME: ecommauth
+    ECS_SERVICE: ecommauth-service
+    ECS_CLUSTER: ecomm-cluster
+
+phases:
+  pre_build:
+    commands:
+      - echo Logging in to Amazon ECR...
+      - aws ecr get-login-password --region $AWS_DEFAULT_REGION |
+        docker login --username AWS --password-stdin $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com
+      - IMAGE_TAG=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
+
+  build:
+    commands:
+      - echo Building ecommauth image...
+      - docker build -t $ECR_REPO:$IMAGE_TAG .
+      - docker tag $ECR_REPO:$IMAGE_TAG $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$ECR_REPO:$IMAGE_TAG
+
+  post_build:
+    commands:
+      - echo Pushing image to ECR...
+      - docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$ECR_REPO:$IMAGE_TAG
+      - echo Writing imagedefinitions.json...
+      - >
+        printf '[{"name":"%s","imageUri":"%s"}]'
+        "$CONTAINER_NAME"
+        "$AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$ECR_REPO:$IMAGE_TAG"
+        > imagedefinitions.json
+
+artifacts:
+  files:
+    - imagedefinitions.json
