@@ -2,7 +2,7 @@ FROM public.ecr.aws/amazoncorretto/amazoncorretto:17
 
 WORKDIR /app
 
-COPY ecommadmin/target/*.jar app.jar
+COPY target/*.jar app.jar
 
 EXPOSE 8082
 
