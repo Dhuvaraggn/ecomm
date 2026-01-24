@@ -65,5 +65,128 @@ To run the project, navigate to the desired module directory and execute the fol
 ./mvnw spring-boot:run
 ```
 
+## Cloud Deployment
+
+Architecture Overview
+---------------------
+
+The deployment follows this workflow:
+
+Developer → GitHub → AWS CodePipeline → AWS CodeBuild → Amazon ECR → ECS (Fargate) → ALB
+
+![Architecture](ssn-architecture.png)
+
+
+Local Development & Dockerization
+-------------------------------------
+
+### Prerequisites
+
+*   **Java:** 17 (Eclipse Temurin)
+
+*   **Port:** 8081
+
+*   **Profiles:** prod
+
+
+### Build and Run Locally
+
+```
+1.  Bashmvn clean package -DskipTests
+
+2.  Bashdocker build -t ecommauth:latest .
+
+3.  Bashdocker run -p 8081:8081 ecommauth:latest
+
+4.  Bashcurl http://localhost:8081/actuator/health# Expected: {"status":"UP"}
+```
+
+Infrastructure Setup
+------------------------
+
+### Amazon ECR
+
+Create the repository to host your Docker images:
+
+```
+aws ecr create-repository --repository-name ecommauth --region us-east-1
+```
+
+### ECS Task Definition (Fargate)
+
+*   **CPU:** 512 | **Memory:** 1024
+
+*   **Network Mode:** awsvpc
+
+*   **Port Mapping:** 8081 (TCP)
+
+*   **Logging:** AWSLogs to /ecs/ecommauth
+
+
+### Application Load Balancer (ALB)
+
+| Setting              | Value            |
+|----------------------|------------------|
+| Target Type          | IP               |
+| Protocol / Port      | HTTP / 8081      |
+| Health Check Path    | /actuator/health |
+| Health Grace Period  | 90 Seconds       |
+
+
+Manual ECR Push (Initial Setup)
+-----------------------------------
+
+To push your first image manually:
+
+### Authenticate  
+```
+aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin .dkr.ecr.us-east-1.amazonaws.com
+```  
+### Tag and Push  
+``` 
+docker tag ecommauth:latest .dkr.ecr.us-east-1.amazonaws.com/ecommauth:latest  docker push .dkr.ecr.us-east-1.amazonaws.com/ecommauth:latest
+```
+
+CI/CD Pipeline Configuration
+--------------------------------
+
+The pipeline is automated via CodePipeline using the following buildspec.yml stages:
+
+### Build Stages:
+
+1.  **Pre-Build:** Log in to ECR and generate image tags using the Git commit hash.
+
+2.  **Build:** Run Maven package and build the Docker image.
+
+3.  **Post-Build:** Push the image to ECR and create imagedefinitions.json for ECS deployment.
+
+
+### Deployment Configuration:
+
+*   **Provider:** Amazon ECS
+
+*   **Input Artifact:** imagedefinitions.json
+
+*   **Deployment Style:** Rolling Update
+
+
+Verification
+----------------
+
+To verify the deployment status via CLI:
+
+```
+aws ecs describe-services \    
+--cluster  \    
+--services ecommauth-service
+```
+
+**Final Production Health Check:**
+
+
+```
+curl http:///actuator/health   
+```
+
 ## Conclusion
 This README provides a high-level overview of the Ecomm project and instructions for setting up the environment variables. For further details on each module, please refer to the respective module documentation.
