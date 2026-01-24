@@ -18,8 +18,10 @@ phases:
 
   build:
     commands:
-      - echo Building ecommbuyer image...
+      - echo Building ecommbuyer JAR...
       - cd ecommbuyer
+      - mvn clean package -DskipTests
+      - echo Building Docker image...
       - docker build -t $ECR_REPO:$IMAGE_TAG .
       - docker tag $ECR_REPO:$IMAGE_TAG $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$ECR_REPO:$IMAGE_TAG
 
