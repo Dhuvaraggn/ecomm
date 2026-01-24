@@ -38,4 +38,4 @@ phases:
 
 artifacts:
   files:
-    - imagedefinitions_ecommbuyer.json
+    - imagedefinitions.json

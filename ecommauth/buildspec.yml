@@ -38,4 +38,4 @@ phases:
 
 artifacts:
   files:
-    - imagedefinitions_ecommauth.json
+    - imagedefinitions.json
