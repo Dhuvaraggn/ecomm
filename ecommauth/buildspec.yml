@@ -18,10 +18,8 @@ phases:
 
   build:
     commands:
-      - echo Building ecommauth JAR...
+      - echo Building ecommauth image...
       - cd ecommauth
-      - mvn clean package -DskipTests
-      - echo Building Docker image...
       - docker build -t $ECR_REPO:$IMAGE_TAG .
       - docker tag $ECR_REPO:$IMAGE_TAG $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$ECR_REPO:$IMAGE_TAG
 
@@ -34,7 +32,7 @@ phases:
         printf '[{"name":"%s","imageUri":"%s"}]'
         "$CONTAINER_NAME"
         "$AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$ECR_REPO:$IMAGE_TAG"
-        > imagedefinitions.json
+        > ../imagedefinitions.json
 
 artifacts:
   files:
