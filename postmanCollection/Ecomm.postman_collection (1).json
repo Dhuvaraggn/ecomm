@@ -1,0 +1,426 @@
+{
+  "info": {
+    "_postman_id": "bec6b200-1576-431f-a56e-73f45988c044",
+    "name": "Ecomm",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "20296332"
+  },
+  "item": [
+    {
+      "name": "Register",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"username\":\"preethi\",\n    \"password\":\"preethi@123\",\n    \"role\":\"ADMIN\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:8081/api/auth/register",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8081",
+          "path": [
+            "api",
+            "auth",
+            "register"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Login",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"username\":\"preethi\",\n    \"password\":\"preethi@123\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:8081/api/auth/login",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8081",
+          "path": [
+            "api",
+            "auth",
+            "login"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Validate User",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8081/api/auth/validate/preethi",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8081",
+          "path": [
+            "api",
+            "auth",
+            "validate",
+            "preethi"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Admin - Add Product",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "username",
+            "value": "preethi",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"sellerId\":\"123\",\n    \"name\":\"watch\",\n    \"description\":\"brand-titan,model-001\",\n    \"price\":\"2000\",\n    \"quantity\":\"3\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:8082/api/admin/products",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8082",
+          "path": [
+            "api",
+            "admin",
+            "products"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Admin - Update Product",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "username",
+            "value": "preethi",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"sellerId\":\"123\",\n    \"name\":\"watch\",\n    \"description\":\"brand-titan,model-002\",\n    \"price\":\"2000\",\n    \"quantity\":\"3\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:8082/api/admin/products/1",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8082",
+          "path": [
+            "api",
+            "admin",
+            "products",
+            "1"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Admin - List Products",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "username",
+            "value": "preethi",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"sellerId\":\"123\",\n    \"name\":\"watch\",\n    \"description\":\"brand-titan,model-001\",\n    \"price\":\"2000\",\n    \"quantity\":\"3\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:8082/api/admin/products",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8082",
+          "path": [
+            "api",
+            "admin",
+            "products"
+          ],
+          "query": [
+            {
+              "key": "",
+              "value": "",
+              "type": "text",
+              "disabled": true
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Admin - Update Product Quantity",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "username",
+            "value": "preethi",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:8082/api/admin/products/1/quantity?quantity=10",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8082",
+          "path": [
+            "api",
+            "admin",
+            "products",
+            "1",
+            "quantity"
+          ],
+          "query": [
+            {
+              "key": "quantity",
+              "value": "10",
+              "type": "text"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Admin - List Product By Id",
+      "request": {
+        "method": "GET",
+        "header": []
+      },
+      "response": []
+    },
+    {
+      "name": "Admin - List Available Products",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8082/api/admin/products/available",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8082",
+          "path": [
+            "api",
+            "admin",
+            "products",
+            "available"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Buyer - List Products",
+      "request": {
+        "method": "GET",
+        "header": []
+      },
+      "response": []
+    },
+    {
+      "name": "Buyer - Add To Cart",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "username",
+            "value": "sam",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8083/api/buyer/cart?productId=1&quantity=1",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8083",
+          "path": [
+            "api",
+            "buyer",
+            "cart"
+          ],
+          "query": [
+            {
+              "key": "productId",
+              "value": "1",
+              "type": "text"
+            },
+            {
+              "key": "quantity",
+              "value": "1",
+              "type": "text"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Buyer - List Cart",
+      "request": {
+        "method": "GET",
+        "header": []
+      },
+      "response": []
+    },
+    {
+      "name": "Buyer - Delete Cart by Id",
+      "request": {
+        "method": "DELETE",
+        "header": [
+          {
+            "key": "username",
+            "value": "sam",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8083/api/buyer/cart/1",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8083",
+          "path": [
+            "api",
+            "buyer",
+            "cart",
+            "1"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Buyer - Place Order",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "username",
+            "value": "sam",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8083/api/buyer/orders",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8083",
+          "path": [
+            "api",
+            "buyer",
+            "orders"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Buyer - Order History",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "username",
+            "value": "sam",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8083/api/buyer/orders",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8083",
+          "path": [
+            "api",
+            "buyer",
+            "orders"
+          ]
+        }
+      },
+      "response": []
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseURL",
+      "value": "",
+      "type": "default"
+    }
+  ]
+}
